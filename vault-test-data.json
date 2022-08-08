@@ -1,0 +1,35 @@
+{
+    "secret": {
+        "d1": {
+            "d11": {
+                "google": "google_pass",
+                "keplr": "keplr_pass"
+            },
+            "d12": {}
+        },
+        "d2": {},
+        "d3": {
+            "d31": {
+                "github": "github_pass",
+                "github_token": "github_token_pass",
+                "github_user": "github_user_pass",
+                "github_cred": "github_cred_pass"
+            },
+            "d32": {
+                "d321": {},
+                "d322": {},
+                "d323": {}
+            },
+            "d33": {
+                "d331": {},
+                "d332": {},
+                "mono": "mono_pass",
+                "privat": "privat_pass",
+                "ukrsib": "ukrsib_pass"
+            },
+            "d34": {
+                "spotify": "spotify_pass"
+            }
+        }
+    }
+}
