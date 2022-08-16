@@ -1,15 +1,5 @@
 import json
-import subprocess
 import sys
-
-POWERSHELL_PATH = '%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe'
-DATA_PATH = '.\\vault-test-data.json'
-
-
-def run_powershell_command(cmd):
-    res = subprocess.run([POWERSHELL_PATH, '-Command', cmd], shell=True, capture_output=True)
-    if res.returncode != 0:
-        raise Exception(res.stderr)
 
 
 def read_data(file_path) -> dict:
@@ -32,6 +22,7 @@ def create(current_path, data):
 
 
 if __name__ == '__main__':
+    DATA_PATH = '.\\vault-test-data.json'
     test_data = read_data(DATA_PATH)
     commands = create('secret', test_data.get('secret', {}))
     for cmd in commands:
