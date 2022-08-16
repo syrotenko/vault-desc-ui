@@ -1,8 +1,6 @@
 import json
 import sys
 
-DATA_PATH = '.\\vault-test-data.json'
-
 
 def read_data(file_path) -> dict:
     with open(file_path, 'r') as f:
@@ -24,6 +22,7 @@ def create(current_path, data):
 
 
 if __name__ == '__main__':
+    DATA_PATH = '.\\vault-test-data.json'
     test_data = read_data(DATA_PATH)
     commands = create('secret', test_data.get('secret', {}))
     for cmd in commands:
