@@ -9,7 +9,7 @@ def read_data(file_path) -> dict:
 
 
 def write_key(path, key, val):
-    return f'vault kv put {path} {key}={val}'
+    return f'vault kv patch {path} {key}={val}'
 
 
 def create(current_path, data):
@@ -17,6 +17,7 @@ def create(current_path, data):
     for k, v in data.items():
         if isinstance(v, dict):
             cmds.extend(create(f'{current_path}/{k}', v))
+            print(f'{current_path}/{k}')
         else:
             cmds.append(write_key(current_path, k, v))
     return cmds
