@@ -9,7 +9,7 @@ def read_data(file_path) -> dict:
 
 
 def write_key(path, key, val):
-    return f'vault kv patch {path} {key}={val}'
+    return f'{path} {key}={val}'
 
 
 def create(current_path, data):
