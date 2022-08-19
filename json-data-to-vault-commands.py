@@ -1,6 +1,5 @@
 import json
 import sys
-import argparse
 
 
 def read_data(file_path) -> dict:
@@ -17,21 +16,14 @@ def create(current_path, data):
     for k, v in data.items():
         if isinstance(v, dict):
             cmds.extend(create(f'{current_path}/{k}', v))
-            print(f'{current_path}/{k}')
         else:
             cmds.append(write_key(current_path, k, v))
     return cmds
 
 
-def parse_command_line():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--data_path", required=True)
-    return parser.parse_args()
-
-
 if __name__ == '__main__':
-    args = parse_command_line()
-    test_data = read_data(args.data_path)
+    DATA_PATH = '.\\vault-test-data.json'
+    test_data = read_data(DATA_PATH)
     commands = create('secret', test_data.get('secret', {}))
     for cmd in commands:
         print(cmd)
