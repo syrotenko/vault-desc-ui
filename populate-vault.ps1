@@ -2,6 +2,7 @@ $CREDENTIALS = Get-Content .\.credentials.json | ConvertFrom-Json
 $env:VAULT_ADDR = $CREDENTIALS.VAULT_ADDR
 $env:VAULT_TOKEN = $CREDENTIALS.VAULT_TOKEN
 $SCRIPT_PATH = "json-data-to-vault-commands.py"
+$SCRIPT_ARGUMENT = "-d .\\vault-test-data.json"
 
 function GET_COMMAND {
     param(
@@ -19,7 +20,7 @@ function EXECUTE_COMMAND{
     Invoke-Expression $command
 }
 
-$commands = & $CREDENTIALS.VENV_PATH $SCRIPT_PATH
+$commands = & $VENV_PATH $SCRIPT_PATH $SCRIPT_ARGUMENT
 foreach ($cmd in $commands) {
     $patch_command = GET_COMMAND -command_name 'patch' -data $cmd
     EXECUTE_COMMAND -command $patch_command
