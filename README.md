@@ -54,13 +54,21 @@ Set the following values in the `populate-vault.ps1` script:
 
 -   `POWERSHELL_PATH` - path to the PowerShell
 -   `DATA_PATH` - path to the data (e.g. `vault-test-data.json`)
+-   `SCRIPT_PATH` - path to the `json-data-to-vault-commands.py` script
 
-Set the following values in the `populate-vault.ps1` script:
+Create the `.credentials.json` in the project folder and set the following values in:
 
+```json
+{
+  "VAULT_ADDR" : "",
+  "VAULT_TOKEN" : "",
+  "VENV_PATH" : ""
+}
+```
+Where
 -   `VAULT_ADDR` - value from the previous step
 -   `VAULT_TOKEN` - value from the previous step
 -   `VENV_PATH` - path to the Python
--   `SCRIPT_PATH` - path to the `json-data-to-vault-commands.py` script
 
 Run as admin in PowerShell
 
