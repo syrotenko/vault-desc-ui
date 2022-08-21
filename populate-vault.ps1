@@ -2,7 +2,7 @@ $CREDENTIALS = Get-Content .\.credentials.json | ConvertFrom-Json
 $env:VAULT_ADDR = $CREDENTIALS.VAULT_ADDR
 $env:VAULT_TOKEN = $CREDENTIALS.VAULT_TOKEN
 $SCRIPT_PATH = "json-data-to-vault-commands.py"
-$SCRIPT_ARGUMENT = "-d .\\vault-test-data.json"
+$SCRIPT_ARGUMENT = "-d.\\vault-test-data.json"
 
 function GET_COMMAND {
     param(
