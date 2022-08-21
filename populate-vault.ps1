@@ -20,7 +20,7 @@ function EXECUTE_COMMAND{
     Invoke-Expression $command
 }
 
-$commands = & $VENV_PATH $SCRIPT_PATH $SCRIPT_ARGUMENT
+$commands = & $CREDENTIALS.VENV_PATH $SCRIPT_PATH $SCRIPT_ARGUMENT
 foreach ($cmd in $commands) {
     $patch_command = GET_COMMAND -command_name 'patch' -data $cmd
     EXECUTE_COMMAND -command $patch_command
