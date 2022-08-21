@@ -8,6 +8,12 @@ def read_data(file_path) -> dict:
         return json.loads(f.read())
 
 
+def write_command(content):
+    with open('.commands', 'w') as f:
+        for content_line in content:
+            f.write(f'{content_line}\n')
+
+
 def parse_command_line():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--data_path", required=True)
@@ -32,6 +38,5 @@ if __name__ == '__main__':
     args = parse_command_line()
     test_data = read_data(args.data_path)
     commands = create('secret', test_data.get('secret', {}))
-    for cmd in commands:
-        print(cmd)
+    write_command(commands)
     sys.exit(0)
