@@ -1,6 +1,6 @@
-$env:VAULT_ADDR = "http://127.0.0.1:8200"
-$env:VAULT_TOKEN = "hvs.wa94spdg9rBYRJa5vHlDqYS5"
-$VENV_PATH = "D:\projects\own\vault-desc-ui\venv\venv\Scripts\python.exe"
+$CREDENTIALS = Get-Content .\.credentials.json | ConvertFrom-Json
+$env:VAULT_ADDR = $CREDENTIALS.VAULT_ADDR
+$env:VAULT_TOKEN = $CREDENTIALS.VAULT_TOKEN
 $SCRIPT_PATH = "json-data-to-vault-commands.py"
 $SCRIPT_ARGUMENT = "-d .\\vault-test-data.json"
 
