@@ -5,7 +5,7 @@ from app_view_model import ConnectMethod
 
 class AppView(tk.Tk):
     TITLE = 'vault-desk-ui'
-    GEOMETRY = '650x400'
+    GEOMETRY = '650x500'
 
     def __init__(self, viewmodel):
         super().__init__()
@@ -75,8 +75,12 @@ class AppView(tk.Tk):
     def create_vault_data_view(self):
         canvas = tk.Canvas(self, highlightthickness=0)
 
-        self.folders = ttk.Treeview(canvas)
+        folders_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
+        folders_scroll.grid(column=1, row=0, sticky=tk.NS)
+
+        self.folders = ttk.Treeview(canvas, yscrollcommand=folders_scroll.set)
         self.folders.grid(column=0, row=0, sticky=tk.NSEW)
+        folders_scroll.config(command=self.folders.yview)
         self.folders.column("#0", width=150)
         self.folders.bind('<<TreeviewSelect>>', self._on_folder_selected)
         self.folders.bind("<<TreeviewOpen>>", self._on_folders_node_open)
@@ -85,7 +89,7 @@ class AppView(tk.Tk):
         table_scroll.grid(column=3, row=0, sticky=tk.NS)
 
         table = ttk.Treeview(canvas, yscrollcommand=table_scroll.set)
-        table.grid(column=1, columnspan=2,  row=0, sticky=tk.NSEW)
+        table.grid(column=2, row=0, sticky=tk.NSEW)
         table.config(height=15)
         table_scroll.config(command=table.yview)
 
