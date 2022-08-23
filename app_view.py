@@ -5,7 +5,7 @@ from app_view_model import ConnectMethod
 
 class AppView(tk.Tk):
     TITLE = 'vault-desk-ui'
-    GEOMETRY = '620x200'
+    GEOMETRY = '650x400'
 
     def __init__(self, viewmodel):
         super().__init__()
@@ -64,3 +64,29 @@ class AppView(tk.Tk):
         self.viewmodel.connect(server=self.server_var.get(), connect_method=self.connect_method_var.get(),
                                token=self.token_var.get(), ldap_user=self.ldap_user_var.get(),
                                ldap_pass=self.ldap_pass_var.get())
+
+    def create_vault_data_view(self):
+        canvas = tk.Canvas(self, highlightthickness=0)
+
+        folders = ttk.Treeview(canvas)
+        folders.grid(column=0, row=0, sticky=tk.NSEW)
+        folders.column("#0", width=150)
+
+        table_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
+        table_scroll.grid(column=3, row=0, sticky=tk.NS)
+
+        table = ttk.Treeview(canvas, yscrollcommand=table_scroll.set)
+        table.grid(column=1, columnspan=2,  row=0, sticky=tk.NSEW)
+        table.config(height=15)
+        table_scroll.config(command=table.yview)
+
+        table['columns'] = ('Key', 'Value')
+
+        table.column("#0", width=0, stretch=tk.NO)
+        table.column("Key", width=200, anchor=tk.CENTER)
+        table.column("Value", width=200, anchor=tk.CENTER)
+
+        table.heading("#0", text="")
+        table.heading("Key", text="Key", anchor=tk.CENTER)
+        table.heading("Value", text="Value", anchor=tk.CENTER)
+        return canvas
