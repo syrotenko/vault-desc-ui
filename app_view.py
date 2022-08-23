@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from app_view_model import ConnectMethod
-from tkinter.constants import *
 
 
 class AppView(tk.Tk):
@@ -70,24 +69,24 @@ class AppView(tk.Tk):
         canvas = tk.Canvas(self, highlightthickness=0)
 
         folders = ttk.Treeview(canvas)
-        folders.grid(column=0, row=0, sticky="nsew")
+        folders.grid(column=0, row=0, sticky=tk.NSEW)
         folders.column("#0", width=150)
 
         table_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
-        table_scroll.grid(column=3, row=0, sticky="ns")
+        table_scroll.grid(column=3, row=0, sticky=tk.NS)
 
         table = ttk.Treeview(canvas, yscrollcommand=table_scroll.set)
-        table.grid(column=1, columnspan=2,  row=0, sticky="nsew")
+        table.grid(column=1, columnspan=2,  row=0, sticky=tk.NSEW)
         table.config(height=15)
         table_scroll.config(command=table.yview)
 
         table['columns'] = ('Key', 'Value')
 
-        table.column("#0", width=0, stretch=NO)
-        table.column("Key", width=200, anchor=CENTER)
-        table.column("Value", width=200, anchor=CENTER)
+        table.column("#0", width=0, stretch=tk.NO)
+        table.column("Key", width=200, anchor=tk.CENTER)
+        table.column("Value", width=200, anchor=tk.CENTER)
 
         table.heading("#0", text="")
-        table.heading("Key", text="Key", anchor=CENTER)
-        table.heading("Value", text="Value", anchor=CENTER)
+        table.heading("Key", text="Key", anchor=tk.CENTER)
+        table.heading("Value", text="Value", anchor=tk.CENTER)
         return canvas
