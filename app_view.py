@@ -5,7 +5,7 @@ from app_view_model import ConnectMethod
 
 class AppView(tk.Tk):
     TITLE = 'vault-desk-ui'
-    GEOMETRY = '650x400'
+    GEOMETRY = '650x500'
 
     def __init__(self, viewmodel):
         super().__init__()
@@ -18,13 +18,20 @@ class AppView(tk.Tk):
         self.token_var = None
         self.ldap_user_var = None
         self.ldap_pass_var = None
+        self.folders = None
+        self.root_v_node = None
 
         self.create_ui()
+
+        self.root_v_node = self.viewmodel.get_first_node()
+        self.init_vault_data_tree(self.root_v_node)
 
     def create_ui(self):
         connect_view = self.create_connect_view()
         connect_view.grid(column=0, row=0)
         ttk.Separator(self, orient=tk.HORIZONTAL).grid(column=0, row=1, sticky=tk.EW, pady=5)
+        vault_data_view = self.create_vault_data_view()
+        vault_data_view.grid(column=0, row=2)
 
     def create_connect_view(self):
         canvas = tk.Canvas(self, highlightthickness=0)
@@ -68,15 +75,21 @@ class AppView(tk.Tk):
     def create_vault_data_view(self):
         canvas = tk.Canvas(self, highlightthickness=0)
 
-        folders = ttk.Treeview(canvas)
-        folders.grid(column=0, row=0, sticky=tk.NSEW)
-        folders.column("#0", width=150)
+        folders_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
+        folders_scroll.grid(column=1, row=0, sticky=tk.NS)
+
+        self.folders = ttk.Treeview(canvas, yscrollcommand=folders_scroll.set)
+        self.folders.grid(column=0, row=0, sticky=tk.NSEW)
+        folders_scroll.config(command=self.folders.yview)
+        self.folders.column("#0", width=150)
+        self.folders.bind('<<TreeviewSelect>>', self._on_folder_selected)
+        self.folders.bind("<<TreeviewOpen>>", self._on_folders_node_open)
 
         table_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
         table_scroll.grid(column=3, row=0, sticky=tk.NS)
 
         table = ttk.Treeview(canvas, yscrollcommand=table_scroll.set)
-        table.grid(column=1, columnspan=2,  row=0, sticky=tk.NSEW)
+        table.grid(column=2, row=0, sticky=tk.NSEW)
         table.config(height=15)
         table_scroll.config(command=table.yview)
 
@@ -90,3 +103,28 @@ class AppView(tk.Tk):
         table.heading("Key", text="Key", anchor=tk.CENTER)
         table.heading("Value", text="Value", anchor=tk.CENTER)
         return canvas
+
+    def init_vault_data_tree(self, v_node):
+        if not v_node:
+            return
+        self.folders.insert('', tk.END, text=v_node.name, iid=v_node.get_full_path(), open=False)
+        self.populate_vault_node_data(v_node)
+
+    def populate_vault_node_data(self, v_node):
+        if not v_node.children:
+            return
+        for node in v_node.children:
+            new_item_id = node.get_full_path()
+            if not self.folders.exists(new_item_id):
+                self.folders.insert(v_node.get_full_path(), tk.END, text=node.name, iid=new_item_id, open=False)
+
+    def _on_folders_node_open(self, event):
+        current_item_id = self.folders.focus()
+        selected_node = self.root_v_node.get_node(current_item_id)
+        if selected_node:
+            for child in selected_node.children:
+                child.children = self.viewmodel.get_children(child)
+                self.populate_vault_node_data(child)
+
+    def _on_folder_selected(self, event):
+        print('NOT YET IMPLEMENTED')

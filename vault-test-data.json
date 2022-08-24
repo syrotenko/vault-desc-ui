@@ -21,7 +21,10 @@
                 "d323": {}
             },
             "d33": {
-                "d331": {},
+                "d331": {
+                    "reddit": "reddit_pass",
+                    "twitter": "twitter_pass"
+                },
                 "d332": {},
                 "mono": "mono_pass",
                 "privat": "privat_pass",
