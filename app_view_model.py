@@ -60,6 +60,11 @@ class AppViewModel:
         d3.children = [d31, d33, d34]
         return secret
 
+    def get_node_data(self, node_path):
+        # TODO: only for debug. Should be replaced with implementation of getting data from vault
+        secret = self._get_whole_tree()
+        node = secret.get_node(node_path)
+        return node.kv
 
 class ConnectMethod:
     Token = 'token'

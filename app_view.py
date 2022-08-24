@@ -20,6 +20,7 @@ class AppView(tk.Tk):
         self.ldap_pass_var = None
         self.folders = None
         self.root_v_node = None
+        self.vault_data = None
 
         self.create_ui()
 
@@ -85,23 +86,25 @@ class AppView(tk.Tk):
         self.folders.bind('<<TreeviewSelect>>', self._on_folder_selected)
         self.folders.bind("<<TreeviewOpen>>", self._on_folders_node_open)
 
-        table_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
-        table_scroll.grid(column=3, row=0, sticky=tk.NS)
+        vault_data_scroll = ttk.Scrollbar(canvas, orient=tk.VERTICAL)
+        vault_data_scroll.grid(column=3, row=0, sticky=tk.NS)
 
-        table = ttk.Treeview(canvas, yscrollcommand=table_scroll.set)
-        table.grid(column=2, row=0, sticky=tk.NSEW)
-        table.config(height=15)
-        table_scroll.config(command=table.yview)
+        self.vault_data = ttk.Treeview(canvas, yscrollcommand=vault_data_scroll.set)
+        self.vault_data.grid(column=2, row=0, sticky=tk.NSEW)
+        self.vault_data.config(height=15)
+        vault_data_scroll.config(command=self.vault_data.yview)
 
-        table['columns'] = ('Key', 'Value')
+        self.vault_data['columns'] = ('Key', 'Value')
 
-        table.column("#0", width=0, stretch=tk.NO)
-        table.column("Key", width=200, anchor=tk.CENTER)
-        table.column("Value", width=200, anchor=tk.CENTER)
+        self.vault_data.column("#0", width=0, stretch=tk.NO)
+        self.vault_data.column("Key", width=200, anchor=tk.CENTER)
+        self.vault_data.column("Value", width=200, anchor=tk.CENTER)
 
-        table.heading("#0", text="")
-        table.heading("Key", text="Key", anchor=tk.CENTER)
-        table.heading("Value", text="Value", anchor=tk.CENTER)
+        self.vault_data.heading("#0", text="")
+        self.vault_data.heading("Key", text="Key", anchor=tk.CENTER)
+        self.vault_data.heading("Value", text="Value", anchor=tk.CENTER)
+
+        self.vault_data.bind('<<TreeviewSelect>>', self._on_copy)
         return canvas
 
     def init_vault_data_tree(self, v_node):
@@ -118,6 +121,12 @@ class AppView(tk.Tk):
             if not self.folders.exists(new_item_id):
                 self.folders.insert(v_node.get_full_path(), tk.END, text=node.name, iid=new_item_id, open=False)
 
+    def fill_vault_data_table(self, node_path):
+        self.vault_data.delete(*self.vault_data.get_children())
+        data = self.viewmodel.get_node_data(node_path)
+        for k, v in data.items():
+            self.vault_data.insert('', tk.END, values=(k, v))
+
     def _on_folders_node_open(self, event):
         current_item_id = self.folders.focus()
         selected_node = self.root_v_node.get_node(current_item_id)
@@ -127,4 +136,9 @@ class AppView(tk.Tk):
                 self.populate_vault_node_data(child)
 
     def _on_folder_selected(self, event):
-        print('NOT YET IMPLEMENTED')
+        node_path = self.folders.focus()
+        self.fill_vault_data_table(node_path)
+
+    def _on_copy(self, event):
+        item = self.vault_data.selection()[0]
+        values = self.vault_data.item(item, 'values')
