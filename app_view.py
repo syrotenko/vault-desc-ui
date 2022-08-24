@@ -140,5 +140,6 @@ class AppView(tk.Tk):
         self.fill_vault_data_table(node_path)
 
     def _on_copy(self, event):
-        item = self.vault_data.selection()[0]
-        values = self.vault_data.item(item, 'values')
+        item = self.vault_data.selection()
+        if item:
+            values = self.vault_data.item(item[0], 'values')
