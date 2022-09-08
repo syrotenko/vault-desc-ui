@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from app_view_model import ConnectMethod
-
+import pyperclip as pc
 
 class AppView(tk.Tk):
     TITLE = 'vault-desk-ui'
@@ -143,3 +143,6 @@ class AppView(tk.Tk):
         item = self.vault_data.selection()
         if item:
             values = self.vault_data.item(item[0], 'values')
+            if len(values) > 1:
+                key, value = values[0], values[1]
+                pc.copy(f'{key} {value}')

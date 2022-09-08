@@ -30,6 +30,10 @@ vault
 
 ## Install Python (3.9)
 
+## Install pyperclip:
+```powershell
+pip install pyperclip
+```
 &nbsp;
 
 # Prepare vault (each time)
